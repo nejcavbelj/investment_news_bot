@@ -1,0 +1,32 @@
+# --- Python cache ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Virtual environments ---
+venv/
+.env/
+env/
+.venv/
+
+# --- Secrets (make extra sure .env is ignored) ---
+.env
+
+# --- Logs & temp files ---
+*.log
+*.tmp
+
+# --- IDE / Editor files ---
+.idea/
+.vscode/
+
+# --- OS generated files ---
+.DS_Store
+Thumbs.db
+
+# --- Tests / experimental scripts (exclude from production) ---
+tests/
+bot_test_info.py
+test_openai.py
+Working_module.py

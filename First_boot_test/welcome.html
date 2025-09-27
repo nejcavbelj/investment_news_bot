@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Investo - Setup</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#fff7f0; margin:0; }
+    header { background:#ff6600; color:white; padding:1em; text-align:center; }
+    .container {
+      max-width:600px; margin:2em auto; background:white; padding:2em;
+      border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+    h3 { color:#ff6600; margin-top:1.5em; }
+    label { display:block; margin-top:1em; font-weight:bold; }
+    input {
+      width:100%; padding:8px; margin-top:5px;
+      border:1px solid #ccc; border-radius:5px;
+    }
+    small { display:block; color:#666; margin-top:4px; font-size:0.85em; }
+    input[type=submit] {
+      background-color:#ff6600; border:none; color:white;
+      font-weight:bold; font-size:1em; padding:12px;
+      margin-top:20px; border-radius:5px; cursor:pointer;
+      transition: background-color 0.2s ease;
+    }
+    input[type=submit]:hover { background-color:#e65c00; }
+    .tip-box {
+      background:#fff4e0; border:1px solid #ff6600;
+      padding:1em; border-radius:8px; margin-top:1.5em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Welcome to Investo Setup</h2>
+  </header>
+  <div class="container">
+
+    <p>Please fill in the details so your Investo bot can connect to Wi-Fi and Telegram.<br>
+    This only needs to be done once.</p>
+
+    <form method="post">
+      <h3>1. Wi-Fi Connection</h3>
+      <label>Wi-Fi Network Name (SSID):
+        <input name="ssid" placeholder="e.g. Home-WiFi" required>
+      </label>
+      <small>This is the name of your home Wi-Fi network (check on your phone).</small>
+
+      <label>Wi-Fi Password:
+        <input name="wifi_pass" type="password" placeholder="Wi-Fi password">
+      </label>
+      <small>Use the same password you normally type when connecting a new device.</small>
+
+      <h3>2. Telegram Bot</h3>
+      <label>Telegram Bot Token:
+        <input name="tg_token" placeholder="123456:ABC-DEF..." required>
+      </label>
+      <small>
+        Get this from <b>BotFather</b> in Telegram:<br>
+        1. Search <b>@BotFather</b><br>
+        2. Send <code>/newbot</code><br>
+        3. Copy the token string and paste it here
+      </small>
+
+      <h3>3. OpenAI API Key (optional)</h3>
+      <label>OpenAI API Key:
+        <input name="openai" placeholder="sk-...">
+      </label>
+      <small>Needed for AI stock summaries. Get one at <a href="https://platform.openai.com/" target="_blank">OpenAI</a>.</small>
+
+      <h3>4. Finnhub API Key (optional)</h3>
+      <label>Finnhub API Key:
+        <input name="finnhub" placeholder="finnhub_token">
+      </label>
+      <small>Needed for real-time stock news. Free at <a href="https://finnhub.io/" target="_blank">finnhub.io</a>.</small>
+
+      <h3>5. Reddit API (optional)</h3>
+      <p>Follow these steps to create Reddit API keys:</p>
+      <ol>
+        <li>Go to <a href="https://www.reddit.com/prefs/apps" target="_blank">Reddit Apps</a></li>
+        <li>Click <b>Create App</b>, choose <b>script</b> type</li>
+        <li>Set redirect URI = <code>http://localhost:8080</code></li>
+        <li>Copy your <b>Client ID</b> and <b>Client Secret</b></li>
+        <li>Create a <b>User Agent</b> like <code>InvestoBot/1.0 by your_username</code></li>
+      </ol>
+
+      <label>Reddit Client ID:
+        <input name="reddit_id" placeholder="e.g. XyZaBc123">
+      </label>
+      <label>Reddit Client Secret:
+        <input name="reddit_secret" placeholder="e.g. AbC123XyZaBc">
+      </label>
+      <label>Reddit User Agent:
+        <input name="reddit_agent" placeholder="InvestoBot/1.0 by your_username">
+      </label>
+
+      <!-- 📱 Important final step -->
+      <div class="tip-box">
+        <h3>📱 Final Step</h3>
+        <p>After you press <b>Save & Connect</b>, Investo will try to join your Wi-Fi.<br>
+        Then, open Telegram on your phone and send <code>/start</code> to your bot.<br>
+        This links Investo to your account.</p>
+      </div>
+
+      <input type="submit" value="Save & Connect">
+    </form>
+  </div>
+</body>
+</html>
