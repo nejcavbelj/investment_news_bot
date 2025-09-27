@@ -291,7 +291,11 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Run Bot
 # ----------------------
 def main():
-    app = Application.builder().token(TOKEN).build()
+    from telegram.request import HTTPXRequest
+
+    request = HTTPXRequest(http_version="1.1")  # force HTTP/1.1
+    app = Application.builder().token(TOKEN).request(request).build()
+
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handler))
     print("Bot ready. Type 'SUMMARY' or a ticker like 'TSLA'.")
     app.run_polling()
