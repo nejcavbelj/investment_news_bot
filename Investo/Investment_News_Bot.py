@@ -54,6 +54,20 @@ def check_keys():
 
 check_keys()
 
+import re
+
+# --- ticker validator ---
+def is_valid_ticker(ticker: str) -> bool:
+    """
+    Validate tickers:
+    - Only A–Z letters, up to 5 chars (covers most US stocks).
+    - No $ prefix or garbage like ETF, CEO, I, US.
+    """
+    return bool(re.fullmatch(r"[A-Z]{1,5}", ticker)) and ticker not in {"CEO", "ETF", "US", "I"}
+
+def clean_tickers(tickers):
+    return [t for t in tickers if is_valid_ticker(t)]
+
 # ----------------------
 # Yahoo Finance Trending / Most Active
 # ----------------------
@@ -262,9 +276,14 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         startup_warnings.clear()
 
     if text == "SUMMARY":
-        volume = get_top_volume_tickers(TOP_N_TRENDING)
-        mentions = get_most_mentioned_tickers(TOP_N_TRENDING)
+        volume = clean_tickers(get_top_volume_tickers(TOP_N_TRENDING))
+        mentions = clean_tickers(get_most_mentioned_tickers(TOP_N_TRENDING))
         combined = list(dict.fromkeys(volume + mentions))
+
+        if not combined:
+            await update.message.reply_text("⚠ Could not find valid tickers right now. Try again later.")
+            return
+
         # Rank: big moves or many mentions
         pkgs = [get_stock_package(s) for s in combined]
         pkgs.sort(key=lambda x: (
