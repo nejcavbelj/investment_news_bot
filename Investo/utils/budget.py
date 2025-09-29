@@ -1,8 +1,8 @@
-from telegram import Bot
-
-def send_budget_reminder(chat_id, bot_token, remaining_percent):
-    bot = Bot(token=bot_token)
-    message = f"Reminder: You only have {remaining_percent:.1f}% of your OpenAI token budget left!"
-    bot.send_message(chat_id=chat_id, text=message)
-
-    #This will send a notification EVERY TIME any message is received (for example, every time a ticker is inserted in chat) if the balance is below 10%.
+def is_token_budget_low(tokens_used, primary_budget, threshold_percent=10):
+    """
+    Returns True if the remaining token budget is less than or equal to the threshold percentage.
+    """
+    if primary_budget == 0:
+        return True  # Avoid division by zero; treat as low budget.
+    remaining_percent = 100 * (primary_budget - tokens_used) / primary_budget
+    return remaining_percent <= threshold_percent
