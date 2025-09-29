@@ -1,7 +1,8 @@
 import openai
 from api.finnhub import get_global_news
+from utils.token_persistence import save_token_data
 
-def summarize_stocks(data_list, title, mode="summary"):
+def summarize_stocks(data_list, title, mode="summary", context=None):
     if mode == "ticker":
         max_tokens = 300
         per_stock = "Use up to 300 tokens total for this single stock."
@@ -46,6 +47,18 @@ def summarize_stocks(data_list, title, mode="summary"):
             temperature=0.6,
             max_tokens=max_tokens,
         )
-        return resp.choices[0].message.content.strip()
+        summary = resp.choices[0].message.content.strip()
+
+        # --- Track tokens used and persist ---
+        if context is not None and hasattr(resp, "usage"):
+            tokens_used = getattr(resp.usage, "total_tokens", 0)
+            context.bot_data["tokens_used"] = context.bot_data.get("tokens_used", 0) + tokens_used
+            save_token_data(
+                context.bot_data["tokens_used"],
+                context.bot_data.get("primary_budget", 1000)
+            )
+
+        return summary
+
     except Exception as e:
         return f"AI summary failed: {e}"

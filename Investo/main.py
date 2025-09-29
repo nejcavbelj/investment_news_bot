@@ -6,6 +6,8 @@ from api.yfinance import get_stock_data_yf
 from utils.tickers import clean_tickers
 from summarizer import summarize_stocks
 from telegram_handler import start_bot
+from utils.token_persistence import load_token_data
+
 
 def get_stock_package(symbol):
     d = get_stock_data_yf(symbol)
@@ -16,10 +18,16 @@ def get_stock_package(symbol):
 def main():
     config = load_config()
     set_api_key(config['FINNHUB_API_KEY'])
+
+    # Load tokens and budget from file
+    tokens_used, primary_budget = load_token_data()
+
     start_bot(
         config, startup_warnings, get_stock_package,
         get_top_volume_tickers, get_most_mentioned_tickers,
-        clean_tickers, summarize_stocks
+        clean_tickers, summarize_stocks,
+        tokens_used=tokens_used,
+        primary_budget=primary_budget
     )
 
 if __name__ == "__main__":
